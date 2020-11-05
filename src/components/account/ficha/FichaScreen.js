@@ -6,12 +6,19 @@ import { GeneralScreen } from './GeneralScreen';
 import { VacunasScreen } from './VacunasScreen';
 import { VitaminasScreen } from './VitaminasScreen';
 import { CirugiasScreen } from './CirugiasScreen';
+import { useDispatch } from 'react-redux';
+import { cargarVacunas } from '../../../actions/ficha';
 
 export const FichaScreen = ({ history }) => {
 
   const { petId } = useParams();
 
-  const [section, setSection] = useState('vacunas')
+  const [section, setSection] = useState('general')
+
+  const dispatch = useDispatch();
+
+  // cargando vacunas de la ficha, se le deberia enviar el uid de la ficha o mascota....
+  dispatch( cargarVacunas() );
 
   const mascota = useMemo(() => getPetByUid( petId ), [ petId ])
 
