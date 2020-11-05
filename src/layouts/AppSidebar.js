@@ -8,7 +8,7 @@ export const AppSidebar = () => {
       <div className="border-b border-gray-400 p-3">
         <h1 className="text-lg inline-flex items-center">
           <em className="fas fa-paw mr-1"></em>
-          <span className="hidden md:block">Veterinaria App</span>
+          <span className="hidden md:block">Veterinaria</span>
         </h1>
       </div>
       <div className="mt-5 w-full flex flex-col text-gray-800">
