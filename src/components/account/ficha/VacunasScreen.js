@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { addVacuna, cargarVacunas } from '../../../actions/ficha';
+import { addVacuna, cargarVacunas, deleteVacuna, editVacuna } from '../../../actions/ficha';
 import { useForm } from '../../../hooks/useForm';
+import Swal from 'sweetalert2'
 
 export const VacunasScreen = () => {
 
   const dispatch = useDispatch();
   const { vacunas } = useSelector(state => state.ficha)
-  console.log('[VacunasScreen] vacunas :: ', vacunas);
+  // console.log('[VacunasScreen] vacunas :: ', vacunas);
   const [modalVacuna, setModalVacuna] = useState(false)
+  const [vacunaId, setVacunaId] = useState('')
 
-  const [ formValues, handleInputChange] = useForm({
+  const [ formValues, handleInputChange, reset, handleSetAllData ] = useForm({
     nombreVacuna: '',
     descripcion: '',
     fecha: '',
@@ -29,20 +31,59 @@ export const VacunasScreen = () => {
   }
 
   const handleCloseModal = () => {
+    setVacunaId('')
+    handleSetAllData({
+      nombreVacuna: '',
+      descripcion: '',
+      fecha: '',
+      fechaRevacunacion: ''
+    })
     setModalVacuna(false)
   }
 
   const handleAddVacuna = () => {
-    dispatch( addVacuna(
-      nombreVacuna,
-      descripcion,
-      fecha,
-      fechaRevacunacion
-    ) )
+    if (vacunaId === '') {
+      dispatch( addVacuna(
+        nombreVacuna,
+        descripcion,
+        fecha,
+        fechaRevacunacion
+      ) )
+    } else {
+      dispatch( editVacuna(
+        vacunaId,
+        nombreVacuna,
+        descripcion,
+        fecha,
+        fechaRevacunacion
+      ) )
+    }
 
     dispatch( cargarVacunas() )
 
     setModalVacuna(false)
+  }
+
+  const handleEdit = ( item ) => {
+    setVacunaId( item.id )
+    handleSetAllData( item )
+    setModalVacuna( true );
+  }
+
+  const handleDelete = ( id ) => {
+    console.log('eliminando');
+    Swal.fire({
+      title: 'Estás segura/o de eliminar esta vacuna?',
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+      confirmButtonColor: '#8FD300'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch( deleteVacuna( id ) )
+        Swal.fire('Vacuna eliminada correctamente!', '', 'success')
+        dispatch( cargarVacunas() )
+      }
+    })
   }
 
   return (
@@ -73,6 +114,10 @@ export const VacunasScreen = () => {
             <tr>
               <th
                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Acciones
+              </th>
+              <th
+                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Nombre
               </th>
               <th
@@ -93,42 +138,48 @@ export const VacunasScreen = () => {
               </th>
             </tr>
           </thead>
-            <tbody>
-              {
-                vacunas.map( item => (
-                  <tr key={ item.id }>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        { item.nombreVacuna }
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        { item.descripcion }
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        { item.fecha }
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        { item.fechaRevacunacion }
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <span
-                        className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                        <span aria-hidden
-                          className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                        <span className="relative">{ item.id }</span>
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
+          <tbody>
+            {
+              vacunas.map( item => (
+                <tr key={ item.id }>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 flex space-x-3 whitespace-no-wrap">
+                      <button onClick={ handleEdit.bind(this, item) } className="focus:outline-none text-warning"><em className="fas fa-edit"></em></button>
+                      <button onClick={ handleDelete.bind(this, item.id) } className="focus:outline-none text-error"><em className="fas fa-trash-alt"></em></button>
+                    </p>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      { item.nombreVacuna }
+                    </p>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      { item.descripcion }
+                    </p>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      { item.fecha }
+                    </p>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                      { item.fechaRevacunacion }
+                    </p>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <span
+                      className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                      <span aria-hidden
+                        className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                      <span className="relative">{ item.id }</span>
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
         </table>
         {/* <div
           className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
@@ -162,7 +213,9 @@ export const VacunasScreen = () => {
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
                       <em className="fas fa-syringe mr-2"></em>
-                      Agregar vacuna
+                      {
+                        vacunaId === '' ? 'Agregar vacuna' : 'Editar vacuna'
+                      }
                     </h3>
                     <form onSubmit={ handleAddVacuna }>
                       <div className="mt-2 flex flex-col">
@@ -211,7 +264,9 @@ export const VacunasScreen = () => {
                         </span>
                         <span className="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
                           <button type="submit" className="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-secondary text-base leading-6 font-medium text-white shadow-sm hover:bg-opacity-75 focus:outline-none focus:border-red-700 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                            Guardar vacuna
+                            {
+                              vacunaId === '' ? 'Guardar vacuna' : 'Actualizar vacuna'
+                            }
                           </button>
                         </span>
                       </div>

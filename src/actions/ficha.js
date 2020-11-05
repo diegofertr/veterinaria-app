@@ -16,6 +16,26 @@ export const addVacuna = ( nombreVacuna, descripcion, fecha, fechaRevacunacion )
   }
 }
 
+export const editVacuna = ( id, nombreVacuna, descripcion, fecha, fechaRevacunacion ) => {
+  return async ( dispatch ) => {
+    const newVacuna = {
+      nombreVacuna,
+      descripcion,
+      fecha,
+      fechaRevacunacion,
+      updatedAt: new Date()
+    };
+
+    await db.collection('vacuna').doc( id ).update( newVacuna )
+  }
+}
+
+export const deleteVacuna= ( id ) => {
+  return async () => {
+    await db.collection('vacuna').doc( id ).delete();
+  }
+}
+
 export const cargarVacunas = () => {
   return async ( dispatch ) => {
     const vacunas = await loadVacunas();
