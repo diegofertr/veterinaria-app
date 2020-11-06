@@ -12,7 +12,7 @@ export const GeneralScreen = ({
     <div>
       {/* <h1>Información general de tu mascota</h1> */}
       <div
-        className="w-full sm:border sm:border-grey-500 rounded-lg px-1 sm:px-10 md:px-12 pt-10 pb-16 mt-8">
+        className="w-full sm:border bg-white sm:border-grey-500 rounded-lg px-1 sm:px-10 md:px-12 pt-10 pb-16 mt-8">
         <h1 className="text-center text-xl font-black pl-3">Información General</h1>
         <div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center items-stretch px-3 py-6 border-b border-grey-500">

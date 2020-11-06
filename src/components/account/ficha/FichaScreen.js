@@ -54,28 +54,28 @@ export const FichaScreen = ({ history }) => {
         <div className="grid grid-flow-row md:grid-flow-col gap-2 mt-5">
           {
             section === 'general' 
-            ? <button onClick={ handleChangeSection.bind(this, 'general') } className="bg-secondary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Información General</button>
-            : <button onClick={ handleChangeSection.bind(this, 'general') } className="border border-secondary px-4 py-3 rounded-md text-sm md:text-base text-secondary focus:outline-none">Información General</button>
+            ? <button onClick={ handleChangeSection.bind(this, 'general') } className="bg-primary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Información General</button>
+            : <button onClick={ handleChangeSection.bind(this, 'general') } className="border border-primary px-4 py-3 rounded-md text-sm md:text-base text-primary focus:outline-none">Información General</button>
           }
           {
             section === 'vacunas' 
-            ? <button onClick={ handleChangeSection.bind(this, 'vacunas') } className="bg-secondary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Vacunas</button>
-            : <button onClick={ handleChangeSection.bind(this, 'vacunas') } className="border border-secondary px-4 py-3 rounded-md text-sm md:text-base text-secondary focus:outline-none">Vacunas</button>
+            ? <button onClick={ handleChangeSection.bind(this, 'vacunas') } className="bg-primary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Vacunas</button>
+            : <button onClick={ handleChangeSection.bind(this, 'vacunas') } className="border border-primary px-4 py-3 rounded-md text-sm md:text-base text-primary focus:outline-none">Vacunas</button>
           }
           {
             section === 'desparacitaciones' 
-            ? <button onClick={ handleChangeSection.bind(this, 'desparacitaciones') } className="bg-secondary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Desparacitaciones</button>
-            : <button onClick={ handleChangeSection.bind(this, 'desparacitaciones') } className="border border-secondary px-4 py-3 rounded-md text-sm md:text-base text-secondary focus:outline-none">Desparacitaciones</button>
+            ? <button onClick={ handleChangeSection.bind(this, 'desparacitaciones') } className="bg-primary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Desparacitaciones</button>
+            : <button onClick={ handleChangeSection.bind(this, 'desparacitaciones') } className="border border-primary px-4 py-3 rounded-md text-sm md:text-base text-primary focus:outline-none">Desparacitaciones</button>
           }
           {
             section === 'vitaminas' 
-            ? <button onClick={ handleChangeSection.bind(this, 'vitaminas') } className="bg-secondary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Vitaminas</button>
-            : <button onClick={ handleChangeSection.bind(this, 'vitaminas') } className="border border-secondary px-4 py-3 rounded-md text-sm md:text-base text-secondary focus:outline-none">Vitaminas</button>
+            ? <button onClick={ handleChangeSection.bind(this, 'vitaminas') } className="bg-primary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Vitaminas</button>
+            : <button onClick={ handleChangeSection.bind(this, 'vitaminas') } className="border border-primary px-4 py-3 rounded-md text-sm md:text-base text-primary focus:outline-none">Vitaminas</button>
           }
           {
             section === 'cirugias' 
-            ? <button onClick={ handleChangeSection.bind(this, 'cirugias') } className="bg-secondary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Cirugías</button>
-            : <button onClick={ handleChangeSection.bind(this, 'cirugias') } className="border border-secondary px-4 py-3 rounded-md text-sm md:text-base text-secondary focus:outline-none">Cirugías</button>
+            ? <button onClick={ handleChangeSection.bind(this, 'cirugias') } className="bg-primary px-4 py-3 rounded-md text-sm md:text-base text-white focus:outline-none">Cirugías</button>
+            : <button onClick={ handleChangeSection.bind(this, 'cirugias') } className="border border-primary px-4 py-3 rounded-md text-sm md:text-base text-primary focus:outline-none">Cirugías</button>
           }
         </div>
         <div className="mt-5">

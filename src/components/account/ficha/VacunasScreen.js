@@ -9,16 +9,16 @@ export const VacunasScreen = () => {
 
   const dispatch = useDispatch();
   const { vacunas } = useSelector(state => state.ficha)
-  // console.log('[VacunasScreen] vacunas :: ', vacunas);
+  console.log('[VacunasScreen] vacunas');
   const [modalVacuna, setModalVacuna] = useState(false)
   const [vacunaId, setVacunaId] = useState('')
 
-  const [ formValues, handleInputChange, reset, handleSetAllData ] = useForm({
+  const [ formValues, handleInputChange, handleSetAllData, reset ] = useForm( {
     nombreVacuna: '',
     descripcion: '',
     fecha: '',
     fechaRevacunacion: ''
-  })
+  } )
 
   const { nombreVacuna, descripcion, fecha, fechaRevacunacion } = formValues
 
@@ -32,12 +32,7 @@ export const VacunasScreen = () => {
 
   const handleCloseModal = () => {
     setVacunaId('')
-    handleSetAllData({
-      nombreVacuna: '',
-      descripcion: '',
-      fecha: '',
-      fechaRevacunacion: ''
-    })
+    reset();
     setModalVacuna(false)
   }
 

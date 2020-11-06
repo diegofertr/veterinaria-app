@@ -9,7 +9,7 @@ export const AppNavbar = () => {
       <div className="">
         <NavLink
           activeClassName="text-secondary"
-          className="text-primary font-bold hover:text-primaryAccent"
+          className="text-primary font-bold hover:text-accent"
           exact
           to="/auth/login">
           Iniciar sesión
