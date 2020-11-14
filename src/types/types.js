@@ -11,5 +11,10 @@ export const types = {
 
   vacunasAddNew: '[Vacunas] New vacuna',
   vacunasLoad: '[Vacunas] Load vacunas',
-  vacunasClean: '[Vacunas] Clean vacunas'
+  vacunasClean: '[Vacunas] Clean vacunas',
+
+
+  cirugiasAddNew: '[Cirugias] New cirugia',
+  cirugiasLoad: '[Cirugias] Load cirugias',
+  cirugiasClean: '[Cirugias] Clean cirugias',
 }

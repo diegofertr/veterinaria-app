@@ -1,0 +1,5 @@
+AlgoScreen.js
+ficha.js
+loadAlgo.js
+fichaReducer.js
+types.js

@@ -13,6 +13,12 @@ export const fichaReducer = ( state = initialState, action ) => {
         vacunas: [ ...action.payload ]
       }
 
+    case types.cirugiasLoad:
+      return {
+        ...state,
+        cirugias: [ ...action.payload ]
+      }
+
     default:
       return state;
   }
