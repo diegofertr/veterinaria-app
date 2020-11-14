@@ -63,8 +63,8 @@ export const AccountRouter = () => {
                 </button>
               )}
             </div>
-            <div className="fondo-auth py-10 px-4 flex flex-col justify-center shadow-md">
-              <img className="h-24 w-auto" src={ "/assets/images/male_avatar.svg" } alt="imagen people" />
+            <div className="fondo-auth py-10 px-4 flex flex-col items-center justify-center border-b">
+              <img className="h-24 w-24" src={ "/assets/images/profile.png" } alt="imagen people" />
               <span className="text-center text-primary mt-2 bg-neutral bg-opacity-50 p-1 rounded font-medium">
                 { name }
               </span>

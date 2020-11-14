@@ -4,6 +4,13 @@ import 'firebase/auth'
 
 const firebaseConfig = {
   // configuracion de firebase
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 }
 
 firebase.initializeApp(firebaseConfig)
