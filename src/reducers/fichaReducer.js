@@ -2,7 +2,9 @@ import { types } from "../types/types";
 
 const initialState = {
   vacunas: [],
-  cirugias: []
+  cirugias: [],
+  desparacitaciones: [],
+  vitaminas: [],
 }
 
 export const fichaReducer = ( state = initialState, action ) => {
@@ -19,7 +21,19 @@ export const fichaReducer = ( state = initialState, action ) => {
         cirugias: [ ...action.payload ]
       }
 
+    case types.desparacitacionesLoad:
+      return {
+        ...state,
+        desparacitaciones: [ ...action.payload ]
+      }
+
+    case types.vitaminasLoad:
+      return {
+        ...state,
+        vitaminas: [ ...action.payload ]
+      }
+
     default:
-      return state;
+    return state;
   }
 }

@@ -17,4 +17,12 @@ export const types = {
   cirugiasAddNew: '[Cirugias] New cirugia',
   cirugiasLoad: '[Cirugias] Load cirugias',
   cirugiasClean: '[Cirugias] Clean cirugias',
+
+  desparacitacionesAddNew: '[Desparacitaciones] New desparacitacion',
+  desparacitacionesLoad: '[Desparacitaciones] Load desparacitaciones',
+  desparacitacionesClean: '[Desparacitaciones] Clean desparacitaciones',
+
+  vitaminasAddNew: '[Vitaminas] New vitamina',
+  vitaminasLoad: '[Vitaminas] Load vitaminas',
+  vitaminasClean: '[Vitaminas] Clean vitaminas',
 }
