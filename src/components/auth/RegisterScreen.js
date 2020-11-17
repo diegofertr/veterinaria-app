@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm'
 import validator from 'validator'
 import { removeError, setError } from '../../actions/ui'
-import { registerWithEmailPassword } from '../../actions/auth'
+import { registerVeterinary, registerWithEmailPassword } from '../../actions/auth'
 
 export const RegisterScreen = () => {
 
@@ -34,6 +34,7 @@ export const RegisterScreen = () => {
   const handleRegisterVeterinary = ( e ) => {
     e.preventDefault();
     console.log('registrando veterinario....');
+    dispatch( registerVeterinary( formValues ) )
   }
 
   const btnRegisterClass = () => {

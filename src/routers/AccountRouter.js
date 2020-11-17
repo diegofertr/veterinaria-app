@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { asyncLogout } from '../actions/auth'
@@ -13,6 +13,7 @@ import { FichasScreen } from '../components/account/fichas/FichasScreen'
 import useBreakpoint from '../hooks/useBreakpoint'
 import Transition from '../components/elements/Transition'
 import FocusTrap from '../components/elements/FocusTrap'
+import { getMenuByRol } from '../selectors/getMenuByRol'
 
 export const AccountRouter = () => {
 
@@ -25,13 +26,16 @@ export const AccountRouter = () => {
     dispatch( asyncLogout() )
   }
 
-  const { name } = useSelector(state => state.auth)
+  const { name, rol } = useSelector(state => state.auth)
   // const handleCloseAside = (e) => {
   //   e.preventDefault();
   //   if (!isStatic) {
   //     setClosed( true )
   //   }
   // }
+
+  const menu = useMemo(() => getMenuByRol( rol ), [ rol ])
+  // console.log('menu obtenido :: ', menu)
 
   return (
     <div className="flex bg-neutral bg-opacity-50">
@@ -70,7 +74,18 @@ export const AccountRouter = () => {
               </span>
             </div>
             <div className="border-r flex-grow flex flex-col">
-              <NavLink
+                { menu.map( item => (
+                  <NavLink
+                    key={ item.to }
+                    activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
+                    className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
+                    exact
+                    to={ item.to }>
+                    <em className={`${item.to} mr-5`}></em>
+                    { item.label }
+                  </NavLink>
+                ))}
+              {/* <NavLink
                 activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
                 className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
                 exact
@@ -101,7 +116,7 @@ export const AccountRouter = () => {
                 to="/cuenta/fichas">
                 <em className="fas fa-file-medical mr-5"></em>
                 Fichas médicas
-              </NavLink>
+              </NavLink> */}
             </div>
           </FocusTrap>
         </aside>

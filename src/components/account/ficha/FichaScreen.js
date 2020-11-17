@@ -7,7 +7,7 @@ import { VacunasScreen } from './VacunasScreen';
 import { VitaminasScreen } from './VitaminasScreen';
 import { CirugiasScreen } from './CirugiasScreen';
 import { useDispatch } from 'react-redux';
-import { cargarVacunas } from '../../../actions/ficha';
+import { cargarCirugias, cargarDesparacitaciones, cargarVacunas, cargarVitaminas } from '../../../actions/ficha';
 
 export const FichaScreen = ({ history }) => {
 
@@ -19,6 +19,9 @@ export const FichaScreen = ({ history }) => {
 
   // cargando vacunas de la ficha, se le deberia enviar el uid de la ficha o mascota....
   dispatch( cargarVacunas() );
+  dispatch( cargarCirugias() );
+  dispatch( cargarDesparacitaciones() );
+  dispatch( cargarVitaminas() );
 
   const mascota = useMemo(() => getPetByUid( petId ), [ petId ])
 

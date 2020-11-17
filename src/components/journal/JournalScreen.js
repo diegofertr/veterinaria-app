@@ -84,7 +84,7 @@ export const JournalScreen = () => {
 
               <main className="mt-10 mx-auto max-w-screen-xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                 <div className="sm:text-center lg:text-left">
-                  <h2 className="text-4xl tracking-tight leading-10 font-extrabold text-gray-900 sm:text-5xl sm:leading-none md:text-6xl">
+                  <h2 className="text-4xl tracking-tight leading-10 font-extrabold text-pink-500 sm:text-5xl sm:leading-none md:text-6xl">
                     Lleva el control digital
                     <br className="xl:hidden" />
                     <span className="text-primary"> de tu amigo</span>

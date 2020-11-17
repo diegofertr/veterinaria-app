@@ -4,7 +4,7 @@ import {
   Switch,
 } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { firebase } from '../firebase/firebase-config'
+import { firebase, usersCollection } from '../firebase/firebase-config'
 import { login } from '../actions/auth'
 
 import { JournalScreen } from '../components/journal/JournalScreen'
@@ -22,9 +22,11 @@ export const AppRouter = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged( (user) => {
+    firebase.auth().onAuthStateChanged( async (user) => {
+      console.log( 'user onAuthState :: ', user )
       if ( user?.uid ) {
-        dispatch( login( user.uid, user.displayName ) );
+        const usuario = await (await usersCollection.doc(user.uid).get()).data();
+        dispatch( login( user.uid, user.displayName, usuario.rol ) );
         setIsLoggedIn( true );
       } else {
         // logout??
