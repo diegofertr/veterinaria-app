@@ -3,13 +3,13 @@ import 'firebase/firestore'
 import 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB7s5pDExtuAlAYUHUFwBm-uSv-lZRCFEg",
-  authDomain: "react-test-9bec6.firebaseapp.com",
-  databaseURL: "https://react-test-9bec6.firebaseio.com",
-  projectId: "react-test-9bec6",
-  storageBucket: "react-test-9bec6.appspot.com",
-  messagingSenderId: "929634704",
-  appId: "1:929634704:web:e30305d15057c05325fb15"
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASEURL,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_APPID,
 }
 const firebaseAdmin = firebase.initializeApp( firebaseConfig, 'admin' )
 
