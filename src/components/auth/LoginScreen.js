@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import validator from 'validator'
-import { loginWithGoogle, loginWithEmailPassword } from '../../actions/auth'
+import { loginWithEmailPassword } from '../../actions/auth'
 import { removeError, setError } from '../../actions/ui'
 import { useForm } from '../../hooks/useForm'
 
@@ -25,9 +25,9 @@ export const LoginScreen = () => {
     }
   }
 
-  const handleGoogleLogin = () => {
-    dispatch( loginWithGoogle() )
-  }
+  // const handleGoogleLogin = () => {
+  //   dispatch( loginWithGoogle() )
+  // }
 
   const btnLoginClass = () => {
     return loading

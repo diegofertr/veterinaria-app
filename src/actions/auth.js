@@ -13,6 +13,7 @@ export const loginWithEmailPassword = ( email, password ) => {
         console.log('user ?? ', user)
         const usuario = await (await usersCollection.doc(user.uid).get()).data();
         console.log('datos del usuario ?? ', usuario)
+        // await usersCollection.doc( user.uid ).update( { createdAt: new Date() })
         dispatch(
           login( user.uid, user.displayName, usuario.rol )
         );

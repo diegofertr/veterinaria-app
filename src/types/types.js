@@ -25,4 +25,9 @@ export const types = {
   vitaminasAddNew: '[Vitaminas] New vitamina',
   vitaminasLoad: '[Vitaminas] Load vitaminas',
   vitaminasClean: '[Vitaminas] Clean vitaminas',
+
+
+
+  usuariosAddNew: '[Usuarios] New usuario',
+  usuariosLoad: '[Usuarios] Load usuarios',
 }
