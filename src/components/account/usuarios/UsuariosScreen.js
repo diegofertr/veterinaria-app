@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2';
 import { addUsuario, cargarUsuarios, deleteUsuario, editUsuario } from '../../../actions/usuario';
@@ -8,7 +8,10 @@ export const UsuariosScreen = () => {
 
   const dispatch = useDispatch();
 
-  // dispatch( cargarUsuarios() )
+  useEffect(() => {
+    console.log('from useEffect');
+    dispatch( cargarUsuarios() ); // carga una sola vez los usuarios
+  }, [ dispatch ])
 
   const { usuarios } = useSelector(state => state.usuario)
   console.log('usuarios :: ', usuarios)

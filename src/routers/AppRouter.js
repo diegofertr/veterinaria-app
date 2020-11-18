@@ -22,10 +22,11 @@ export const AppRouter = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged( async (user) => {
-      console.log( 'user onAuthState :: ', user )
+    console.log('usuario en localStorage :: ', localStorage.getItem('veterinaria_usuario'))
+    firebase.auth().onAuthStateChanged(  async (user) => {
+      // console.log( 'user onAuthState :: ', user )
       if ( user?.uid ) {
-        const usuario = await (await usersCollection.doc(user.uid).get()).data();
+        const usuario = (await usersCollection.doc(user.uid).get()).data();
         dispatch( login( user.uid, user.displayName, usuario.rol ) );
         setIsLoggedIn( true );
       } else {

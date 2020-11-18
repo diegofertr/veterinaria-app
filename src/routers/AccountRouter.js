@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { asyncLogout } from '../actions/auth'
 
 import { CuentaScreen } from '../components/account/CuentaScreen'
@@ -16,9 +16,12 @@ import FocusTrap from '../components/elements/FocusTrap'
 import { getMenuByRol } from '../selectors/getMenuByRol'
 
 export const AccountRouter = () => {
-
   const dispatch = useDispatch()
+
   const [isClosed, setClosed] = useState( false )
+  const [usuario, setUsuario] = useState({})
+  const [userInitials, setUserInitials] = useState('')
+  const [menu, setMenu] = useState([])
 
   const isStatic = useBreakpoint( 'sm' )
 
@@ -26,16 +29,21 @@ export const AccountRouter = () => {
     dispatch( asyncLogout() )
   }
 
-  const { name, rol } = useSelector(state => state.auth)
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('veterinaria_usuario'))
+    setUsuario( user.usuario )
+    setMenu( getMenuByRol( user.usuario.rol ))
+    setUserInitials( user.usuario.nombre.substr(0, 1) )
+  }, [ dispatch, setUsuario, setMenu ])
+
+  const { nombre, rol } = usuario;
+
   // const handleCloseAside = (e) => {
   //   e.preventDefault();
   //   if (!isStatic) {
   //     setClosed( true )
   //   }
   // }
-
-  const menu = useMemo(() => getMenuByRol( rol ), [ rol ])
-  // console.log('menu obtenido :: ', menu)
 
   return (
     <div className="flex bg-neutral bg-opacity-50">
@@ -68,55 +76,28 @@ export const AccountRouter = () => {
               )}
             </div>
             <div className="fondo-auth py-10 px-4 flex flex-col items-center justify-center border-b">
-              <img className="h-24 w-24" src={ "/assets/images/profile.png" } alt="imagen people" />
-              <span className="text-center text-primary mt-2 bg-neutral bg-opacity-50 p-1 rounded font-medium">
-                { name }
+              <span className='uppercase bg-primary text-white text-5xl rounded-full w-24 h-24 flex items-center justify-center'>
+                { userInitials }
+              </span>
+              <span className="text-center text-primary mt-2 bg-neutral bg-opacity-50 p-1 font-medium">
+                { nombre }
+              </span>
+              <span className="text-center text-primary bg-neutral bg-opacity-50 p-1 font-medium">
+                { rol }
               </span>
             </div>
             <div className="border-r flex-grow flex flex-col">
-                { menu.map( item => (
-                  <NavLink
-                    key={ item.to }
-                    activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
-                    className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
-                    exact
-                    to={ item.to }>
-                    <em className={`${item.to} mr-5`}></em>
-                    { item.label }
-                  </NavLink>
-                ))}
-              {/* <NavLink
-                activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
-                className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
-                exact
-                to="/cuenta">
-                <em className="fas fa-home mr-5"></em>
-                Inicio
-              </NavLink>
-              <NavLink
-                activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
-                className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
-                exact
-                to="/cuenta/usuarios">
-                <em className="fas fa-users mr-5"></em>
-                Usuarios
-              </NavLink>
-              <NavLink
-                activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
-                className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
-                exact
-                to="/cuenta/mascotas">
-                <em className="fas fa-paw mr-5"></em>
-                Mascotas
-              </NavLink>
-              <NavLink
-                activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
-                className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
-                exact
-                to="/cuenta/fichas">
-                <em className="fas fa-file-medical mr-5"></em>
-                Fichas médicas
-              </NavLink> */}
+              { menu.map( item => (
+                <NavLink
+                  key={ item.to }
+                  activeClassName="bg-accent bg-opacity-10 hover:bg-opacity-15 border-r-4 border-primary text-primary"
+                  className="hover:bg-accent hover:bg-opacity-10 w-full p-4 cursor-pointer text-dark text-lg"
+                  exact
+                  to={ item.to }>
+                  <em className={`${item.to} mr-5`}></em>
+                  { item.label }
+                </NavLink>
+              ))}
             </div>
           </FocusTrap>
         </aside>
@@ -158,6 +139,7 @@ export const AccountRouter = () => {
             </button>
           </div>
         </header>
+        {/* CONTENIDO CENTRAL DE ADMIN */}
         <div className="py-5 px-10">
           <Switch>
             <Route
@@ -183,6 +165,7 @@ export const AccountRouter = () => {
             <Redirect to="/cuenta" />
           </Switch>
         </div>
+        {/* CONTENIDO CENTRAL DE ADMIN */}
       </main>
     </div>
   )

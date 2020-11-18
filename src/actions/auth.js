@@ -10,9 +10,14 @@ export const loginWithEmailPassword = ( email, password ) => {
 
     firebase.auth().signInWithEmailAndPassword( email, password )
       .then( async ({ user }) => {
-        console.log('user ?? ', user)
-        const usuario = await (await usersCollection.doc(user.uid).get()).data();
-        console.log('datos del usuario ?? ', usuario)
+        // console.log('user ?? ', user)
+        const usuario = (await usersCollection.doc(user.uid).get()).data();
+        // console.log('datos del usuario ?? ', usuario)
+        localStorage.setItem('veterinaria_usuario', JSON.stringify( {
+          usuario,
+          uid: user.uid,
+          displayName: user.displayName
+        } ));
         // await usersCollection.doc( user.uid ).update( { createdAt: new Date() })
         dispatch(
           login( user.uid, user.displayName, usuario.rol )
@@ -141,6 +146,7 @@ export const login = ( uid, displayName, rol ) => ({
 export const asyncLogout = () => {
   return async ( dispatch ) => {
     await firebase.auth().signOut();
+    localStorage.setItem('veterinaria_usuario', null)
 
     dispatch( logout() );
   }
