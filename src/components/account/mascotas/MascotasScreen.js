@@ -119,7 +119,9 @@ export const MascotasScreen = () => {
     console.log('añadiendo nueva ficha', veterinario, mascotaId)
     dispatch( addFicha( veterinario.id, mascotaId ) )
     setModalFicha(false)
-    history.push(`/cuenta/ficha/${ mascotaId }`);
+    setTimeout(() => {
+      history.push(`/cuenta/ficha/${ mascotaId }`);
+    }, 500);
   }
 
   const handleEdit = ( item ) => {

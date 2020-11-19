@@ -34,5 +34,6 @@ export const types = {
 
   mascotasLoad: '[Mascotas] Load mascotas',
 
-  fichaLoad: '[Ficha] Load ficha'
+  fichaLoad: '[Ficha] Load ficha',
+  fichasLoad: '[Ficha] Load fichas veterinario'
 }

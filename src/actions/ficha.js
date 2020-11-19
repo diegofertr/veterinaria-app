@@ -15,6 +15,7 @@ import { types } from "../types/types";
 import { loadCirugias } from '../helpers/loadCirugias';
 import { loadDesparacitaciones } from '../helpers/loadDesparacitaciones';
 import { loadVitaminas } from '../helpers/loadVitaminas';
+import { loadFichas } from "../helpers/loadFichas";
 
 
 
@@ -39,6 +40,19 @@ export const setFicha = ( idFicha ) => ({
   type: types.fichaLoad,
   payload: idFicha
 });
+
+export const cargarFichas = ( uid ) => {
+  return async ( dispatch ) => {
+    const fichas = await loadFichas( uid )
+    console.log( 'get FICHAS  ::: ', fichas )
+    dispatch( setFichas( fichas ) )
+  }
+}
+
+export const setFichas = ( fichas ) => ({
+  type: types.fichasLoad,
+  payload: fichas
+})
 
 
 // logica para vacunas

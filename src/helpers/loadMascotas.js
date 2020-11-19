@@ -17,3 +17,18 @@ export const loadMascotas = async ( uid ) => {
 
   return mascotas;
 }
+
+export const loadAllMascotas = async () => {
+  const mascotas = []
+  const queryMascotas = await mascotasCollection.get();
+
+  queryMascotas.forEach( snap => {
+    // console.log( 'fichaId ', snap.id)
+    mascotas.push({
+      id: snap.id,
+      ...snap.data()
+    });
+  });
+
+  return mascotas;
+}

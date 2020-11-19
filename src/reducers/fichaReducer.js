@@ -6,6 +6,8 @@ const initialState = {
   cirugias: [],
   desparacitaciones: [],
   vitaminas: [],
+
+  fichas: [],
 }
 
 export const fichaReducer = ( state = initialState, action ) => {
@@ -14,6 +16,13 @@ export const fichaReducer = ( state = initialState, action ) => {
       return {
         ...state,
         idFicha: action.payload
+      }
+
+    case types.fichasLoad:
+      console.log('|> datos de fichas a setear en store :: ', action.payload)
+      return {
+        ...state,
+        fichas: action.payload
       }
 
     case types.vacunasLoad:

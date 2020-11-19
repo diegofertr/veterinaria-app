@@ -28,7 +28,7 @@ export const FichaScreen = ({ history }) => {
   const [loading, setLoading] = useState(true)
 
   const dispatch = useDispatch();
-
+  // const { rol } = useSelector(state => state.auth)
 
   useMemo(async () => {
     const data = await getPetByUid( petId )

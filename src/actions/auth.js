@@ -48,16 +48,17 @@ export const registerWithEmailPassword = ( email, password, name ) => {
         await user.updateProfile({ displayName: name });
         console.log( 'usuario registrado!!', user );
         // const { name, email, password, hospitalName, hospitalDirection } = userData;
-        const usuario = await usersCollection.doc(user.uid).set({
+        const data = {
           id: user.uid,
           nombre: name,
           correo: email,
           contrasena: password,
           rol: 'USUARIO'
-        });
-        console.log('usuario nuevo creado ?? ', usuario);
+        }
+        await usersCollection.doc( user.uid ).set( data );
+        // console.log('usuario nuevo creado ?? ', data);
         localStorage.setItem('veterinaria_usuario', JSON.stringify( {
-          usuario,
+          usuario: { ...data },
           uid: user.uid,
           displayName: user.displayName
         } ));
@@ -90,7 +91,7 @@ export const registerVeterinary = ( userData ) => {
         console.log( 'veterinario registrado!!', user );
         // registrando usuario en tabla usuarios de firebase
         const { name, email, password, hospitalName, hospitalDirection } = userData;
-        const usuario = await usersCollection.doc(user.uid).set({
+        const data = {
           id: user.uid,
           nombre: name,
           correo: email,
@@ -98,9 +99,11 @@ export const registerVeterinary = ( userData ) => {
           nombreHospital: hospitalName,
           direccionHospital: hospitalDirection,
           rol: 'VETERINARIO'
-        });
+        }
+        await usersCollection.doc(user.uid).set( data );
+        // console.log('usuario veterinario nuevo creado ?? ', data);
         localStorage.setItem('veterinaria_usuario', JSON.stringify( {
-          usuario,
+          usuario: { ...data },
           uid: user.uid,
           displayName: user.displayName
         } ));
