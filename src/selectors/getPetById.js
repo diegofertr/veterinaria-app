@@ -1,5 +1,11 @@
-import { pets } from "../data/pets"
+import { mascotasCollection } from "../firebase/firebase-config"
 
-export const getPetByUid = ( uid ) => {
-  return pets.find( p => p.uid === uid)
+export const getPetByUid = async ( uid ) => {
+  return await (await mascotasCollection.doc( uid ).get()).data();
+  // mascotasCollection.doc( uid ).get()
+  //   .then(response => {
+  //     console.log('response.data() [mascota]', response.data())
+  //     return response.data()
+  //   })
+  //   .catch(console.error)
 }

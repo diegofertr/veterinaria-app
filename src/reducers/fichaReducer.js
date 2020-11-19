@@ -1,6 +1,7 @@
 import { types } from "../types/types";
 
 const initialState = {
+  idFicha: '',
   vacunas: [],
   cirugias: [],
   desparacitaciones: [],
@@ -9,6 +10,12 @@ const initialState = {
 
 export const fichaReducer = ( state = initialState, action ) => {
   switch (action.type) {
+    case types.fichaLoad:
+      return {
+        ...state,
+        idFicha: action.payload
+      }
+
     case types.vacunasLoad:
       return {
         ...state,

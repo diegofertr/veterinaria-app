@@ -3,8 +3,8 @@ import {
   BrowserRouter as Router,
   Switch,
 } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { firebase, usersCollection } from '../firebase/firebase-config'
+import { useDispatch, useSelector } from 'react-redux'
+import { firebase } from '../firebase/firebase-config'
 import { login } from '../actions/auth'
 
 import { JournalScreen } from '../components/journal/JournalScreen'
@@ -20,14 +20,26 @@ export const AppRouter = () => {
 
   const [checking, setChecking] = useState( true );
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { uid } = useSelector(state => state.auth)
+  console.log( 'uid from user :: ', uid )
+  // const [usuario, setUsuario] = useState(initialState)
 
   useEffect(() => {
-    console.log('usuario en localStorage :: ', localStorage.getItem('veterinaria_usuario'))
-    firebase.auth().onAuthStateChanged(  async (user) => {
+    // console.log('usuario en localStorage :: ', localStorage.getItem('veterinaria_usuario'))
+    // if (user?.uid) {
+      // // if (uid) {
+        //   dispatch( login( user.uid, user.displayName, user.usuario.rol ) );
+        //   setIsLoggedIn( true );
+        // } else {
+    //   setIsLoggedIn( false );
+    // }
+    // setChecking( false );
+    firebase.auth().onAuthStateChanged( async (user) => {
       // console.log( 'user onAuthState :: ', user )
       if ( user?.uid ) {
-        const usuario = (await usersCollection.doc(user.uid).get()).data();
-        dispatch( login( user.uid, user.displayName, usuario.rol ) );
+        const usuario = await JSON.parse(localStorage.getItem('veterinaria_usuario'))
+        // // const usuario = (await usersCollection.doc(user.uid).get()).data();
+        dispatch( login( user.uid, user.displayName, usuario && usuario.usuario ? usuario.usuario.rol : '' ) );
         setIsLoggedIn( true );
       } else {
         // logout??

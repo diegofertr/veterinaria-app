@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 export const DesparacitacionesScreen = () => {
 
   const dispatch = useDispatch();
-  const { desparacitaciones } = useSelector(state => state.ficha)
+  const { idFicha, desparacitaciones } = useSelector(state => state.ficha)
   console.log('[DesparacitacionesScreen] desparacitaciones');
   const [modalDesparacitacion, setModalDesparacitacion] = useState(false)
   const [desparacitacionId, setDesparacitacionId] = useState('')
@@ -22,7 +22,7 @@ export const DesparacitacionesScreen = () => {
   const { nombre, fecha, descripcion } = formValues
 
   const handleRefreshDesparacitaciones = () => {
-    dispatch( cargarDesparacitaciones() );
+    dispatch( cargarDesparacitaciones( idFicha ) );
   }
 
   const handleOpenModal = () => {
@@ -38,6 +38,7 @@ export const DesparacitacionesScreen = () => {
   const handleAddDesparacitacion = () => {
     if (desparacitacionId === '') {
       dispatch( addDesparacitacion(
+        idFicha,
         nombre,
         fecha,
         descripcion
@@ -51,7 +52,7 @@ export const DesparacitacionesScreen = () => {
       ) )
     }
 
-    dispatch( cargarDesparacitaciones() )
+    dispatch( cargarDesparacitaciones( idFicha ) )
 
     setModalDesparacitacion(false)
   }
@@ -74,7 +75,7 @@ export const DesparacitacionesScreen = () => {
       if (result.isConfirmed) {
         dispatch( deleteDesparacitacion( id ) )
         Swal.fire('Desparacitacion eliminada correctamente!', '', 'success')
-        dispatch( cargarDesparacitaciones() )
+        dispatch( cargarDesparacitaciones( idFicha ) )
       }
     })
   }

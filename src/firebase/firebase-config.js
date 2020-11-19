@@ -21,6 +21,10 @@ const firebaseAuth = firebaseAdmin.auth()
 
 const usersCollection = db.collection('usuarios');
 const fichasCollection = db.collection('fichas');
+const vacunasCollection = db.collection('vacunas');
+const cirugiasCollection = db.collection('cirugias');
+const desparacitacionesCollection = db.collection('desparacitaciones');
+const vitaminasCollection = db.collection('vitaminas');
 const mascotasCollection = db.collection('mascotas');
 
 export {
@@ -31,5 +35,9 @@ export {
   firebaseAuth,
   usersCollection,
   fichasCollection,
+  vacunasCollection,
+  cirugiasCollection,
+  desparacitacionesCollection,
+  vitaminasCollection,
   mascotasCollection
 }

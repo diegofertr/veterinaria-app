@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 export const VitaminasScreen = () => {
 
   const dispatch = useDispatch();
-  const { vitaminas } = useSelector(state => state.ficha)
+  const { idFicha, vitaminas } = useSelector(state => state.ficha)
   console.log('[VitaminasScreen] vitaminas');
   const [modalVitamina, setModalVitamina] = useState(false)
   const [vitaminaId, setVitaminaId] = useState('')
@@ -23,7 +23,7 @@ export const VitaminasScreen = () => {
   const { nombre, fecha, proxDosis, descripcion } = formValues
 
   const handleRefreshVitaminas = () => {
-    dispatch( cargarVitaminas() );
+    dispatch( cargarVitaminas( idFicha ) );
   }
 
   const handleOpenModal = () => {
@@ -39,6 +39,7 @@ export const VitaminasScreen = () => {
   const handleAddVitamina = () => {
     if (vitaminaId === '') {
       dispatch( addVitamina(
+        idFicha,
         nombre,
         fecha,
         proxDosis,
@@ -54,7 +55,7 @@ export const VitaminasScreen = () => {
       ) )
     }
 
-    dispatch( cargarVitaminas() )
+    dispatch( cargarVitaminas( idFicha ) )
 
     setModalVitamina(false)
   }
@@ -77,7 +78,7 @@ export const VitaminasScreen = () => {
       if (result.isConfirmed) {
         dispatch( deleteVitamina( id ) )
         Swal.fire('Vitamina eliminada correctamente!', '', 'success')
-        dispatch( cargarVitaminas() )
+        dispatch( cargarVitaminas( idFicha ) )
       }
     })
   }

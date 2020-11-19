@@ -1,4 +1,11 @@
-import { db } from "../firebase/firebase-config";
+import {
+  cirugiasCollection,
+  desparacitacionesCollection,
+  fichasCollection,
+  mascotasCollection,
+  vacunasCollection,
+  vitaminasCollection
+} from "../firebase/firebase-config";
 
 // import { loadCirugias } from "../helpers/loadCirugias";
 import { loadVacunas } from "../helpers/loadVacunas";
@@ -11,9 +18,34 @@ import { loadVitaminas } from '../helpers/loadVitaminas';
 
 
 
-export const addVacuna = ( nombreVacuna, descripcion, fecha, fechaRevacunacion ) => {
+export const addFicha = ( idVeterinario, idMascota ) => {
+  return async ( dispatch ) => {
+    const newFicha = {
+      idMascota,
+      idVeterinario,
+      createdAt: new Date()
+    };
+
+    const ficha = await fichasCollection.add( newFicha )
+    console.log( 'ficha creada!!', ficha )
+    await mascotasCollection.doc( idMascota ).update({
+      idFicha: ficha.id
+    })
+    dispatch( setFicha( ficha.id ) )
+  }
+}
+
+export const setFicha = ( idFicha ) => ({
+  type: types.fichaLoad,
+  payload: idFicha
+});
+
+
+// logica para vacunas
+export const addVacuna = ( idFicha, nombreVacuna, descripcion, fecha, fechaRevacunacion ) => {
   return async ( dispatch ) => {
     const newVacuna = {
+      idFicha,
       nombreVacuna,
       descripcion,
       fecha,
@@ -21,7 +53,7 @@ export const addVacuna = ( nombreVacuna, descripcion, fecha, fechaRevacunacion )
       createdAt: new Date()
     };
 
-    await db.collection('vacuna').add( newVacuna )
+    await vacunasCollection.add( newVacuna )
   }
 }
 
@@ -35,19 +67,19 @@ export const editVacuna = ( id, nombreVacuna, descripcion, fecha, fechaRevacunac
       updatedAt: new Date()
     };
 
-    await db.collection('vacuna').doc( id ).update( newVacuna )
+    await vacunasCollection.doc( id ).update( newVacuna )
   }
 }
 
 export const deleteVacuna= ( id ) => {
   return async () => {
-    await db.collection('vacuna').doc( id ).delete();
+    await vacunasCollection.doc( id ).delete();
   }
 }
 
-export const cargarVacunas = () => {
+export const cargarVacunas = ( idFicha ) => {
   return async ( dispatch ) => {
-    const vacunas = await loadVacunas();
+    const vacunas = await loadVacunas( idFicha );
     dispatch( setVacunas( vacunas ) );
   }
 }
@@ -62,16 +94,17 @@ export const setVacunas = ( vacunas ) => ({
 
 // logica para cirugias
 
-export const addCirugia = ( tipo, fecha, observacion ) => {
+export const addCirugia = ( idFicha, tipo, fecha, observacion ) => {
   return async ( dispatch ) => {
     const newCirugia = {
+      idFicha,
       tipo,
       fecha,
       observacion,
       createdAt: new Date()
     };
 
-    await db.collection('cirugia').add( newCirugia )
+    await cirugiasCollection.add( newCirugia )
   }
 }
 
@@ -84,19 +117,19 @@ export const editCirugia = ( id, tipo, fecha, observacion ) => {
       updatedAt: new Date()
     };
 
-    await db.collection('cirugia').doc( id ).update( newCirugia )
+    await cirugiasCollection.doc( id ).update( newCirugia )
   }
 }
 
 export const deleteCirugia = ( id ) => {
   return async () => {
-    await db.collection('cirugia').doc( id ).delete();
+    await cirugiasCollection.doc( id ).delete();
   }
 }
 
-export const cargarCirugias = () => {
+export const cargarCirugias = ( idFicha ) => {
   return async ( dispatch ) => {
-    const cirugias = await loadCirugias();
+    const cirugias = await loadCirugias( idFicha );
     dispatch( setCirugias( cirugias ) );
   }
 }
@@ -110,17 +143,17 @@ export const setCirugias = ( cirugias ) => ({
 
 // logica para desparacitaciones
 
-export const addDesparacitacion = ( nombre, fecha, descripcion ) => {
+export const addDesparacitacion = ( idFicha, nombre, fecha, descripcion ) => {
   return async ( dispatch ) => {
     const newDesparacitacion = {
+      idFicha,
       nombre,
       fecha,
       descripcion,
-      
       createdAt: new Date()
     };
 
-    await db.collection('desparacitacion').add( newDesparacitacion )
+    await desparacitacionesCollection.add( newDesparacitacion )
   }
 }
 
@@ -133,19 +166,19 @@ export const editDesparacitacion = ( id, nombre, descripcion, fecha ) => {
       updatedAt: new Date()
     };
 
-    await db.collection('desparacitacion').doc( id ).update( newDesparacitacion )
+    await desparacitacionesCollection.doc( id ).update( newDesparacitacion )
   }
 }
 
 export const deleteDesparacitacion = ( id ) => {
   return async () => {
-    await db.collection('desparacitacion').doc( id ).delete();
+    await desparacitacionesCollection.doc( id ).delete();
   }
 }
 
-export const cargarDesparacitaciones = () => {
+export const cargarDesparacitaciones = ( idFicha ) => {
   return async ( dispatch ) => {
-    const desparacitaciones = await loadDesparacitaciones();
+    const desparacitaciones = await loadDesparacitaciones( idFicha );
     dispatch( setDesparacitaciones( desparacitaciones ) );
   }
 }
@@ -159,9 +192,10 @@ export const setDesparacitaciones = ( desparacitaciones ) => ({
 // logica para vitaminas
 
 
-export const addVitamina = ( nombre, fecha, proxDosis, descripcion) => {
+export const addVitamina = ( idFicha, nombre, fecha, proxDosis, descripcion) => {
   return async ( dispatch ) => {
     const newVitamina = {
+      idFicha,
       nombre,
       fecha,
       proxDosis,
@@ -169,7 +203,7 @@ export const addVitamina = ( nombre, fecha, proxDosis, descripcion) => {
       createdAt: new Date()
     };
 
-    await db.collection('vitamina').add( newVitamina )
+    await vitaminasCollection.add( newVitamina )
   }
 }
 
@@ -183,19 +217,19 @@ export const editVitamina = ( id, nombre, fecha, proxDosis, descripcion ) => {
       updatedAt: new Date()
     };
 
-    await db.collection('vitamina').doc( id ).update( newVitamina )
+    await vitaminasCollection.doc( id ).update( newVitamina )
   }
 }
 
 export const deleteVitamina= ( id ) => {
   return async () => {
-    await db.collection('vitamina').doc( id ).delete();
+    await vitaminasCollection.doc( id ).delete();
   }
 }
 
-export const cargarVitaminas = () => {
+export const cargarVitaminas = ( idFicha ) => {
   return async ( dispatch ) => {
-    const vitaminas = await loadVitaminas();
+    const vitaminas = await loadVitaminas( idFicha );
     dispatch( setVitaminas( vitaminas ) );
   }
 }

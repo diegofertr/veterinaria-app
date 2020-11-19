@@ -8,8 +8,8 @@ import Swal from 'sweetalert2'
 export const VacunasScreen = () => {
 
   const dispatch = useDispatch();
-  const { vacunas } = useSelector(state => state.ficha)
-  console.log('[VacunasScreen] vacunas');
+  const { vacunas, idFicha } = useSelector(state => state.ficha)
+  // console.log('[VacunasScreen] vacunas');
   const [modalVacuna, setModalVacuna] = useState(false)
   const [vacunaId, setVacunaId] = useState('')
 
@@ -23,7 +23,7 @@ export const VacunasScreen = () => {
   const { nombreVacuna, descripcion, fecha, fechaRevacunacion } = formValues
 
   const handleRefreshVacunas = () => {
-    dispatch( cargarVacunas() );
+    dispatch( cargarVacunas( idFicha ) );
   }
 
   const handleOpenModal = () => {
@@ -39,6 +39,7 @@ export const VacunasScreen = () => {
   const handleAddVacuna = () => {
     if (vacunaId === '') {
       dispatch( addVacuna(
+        idFicha,
         nombreVacuna,
         descripcion,
         fecha,
@@ -54,8 +55,10 @@ export const VacunasScreen = () => {
       ) )
     }
 
-    dispatch( cargarVacunas() )
+    dispatch( cargarVacunas( idFicha ) )
 
+    setVacunaId('')
+    reset()
     setModalVacuna(false)
   }
 
@@ -77,9 +80,9 @@ export const VacunasScreen = () => {
       if (result.isConfirmed) {
         dispatch( deleteVacuna( id ) )
         Swal.fire('Vacuna eliminada correctamente!', '', 'success')
-        dispatch( cargarVacunas() )
       }
     })
+    dispatch( cargarVacunas( idFicha ) )
   }
 
   return (
@@ -187,88 +190,86 @@ export const VacunasScreen = () => {
         </div>
       </div>
 
-      {
-        modalVacuna && (
-          <div className="fixed z-50 inset-0 overflow-y-auto">
-            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-              <div className="fixed inset-0 transition-opacity">
-                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-              </div>
+      { modalVacuna && (
+        <div className="fixed z-50 inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
 
-              <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
-
-              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <form onSubmit={ handleAddVacuna }>
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    {/* <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg> */}
+                    <em className="fas fa-syringe"></em>
+                  </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                      <em className="fas fa-syringe mr-2"></em>
                       {
                         vacunaId === '' ? 'Agregar vacuna' : 'Editar vacuna'
                       }
                     </h3>
-                    <form onSubmit={ handleAddVacuna }>
-                      <div className="mt-2 flex flex-col">
-                        <input
-                          type="text"
-                          placeholder="Nombre de la vacuna"
-                          name="nombreVacuna"
-                          autoComplete="off"
-                          value={ nombreVacuna }
-                          onChange={ handleInputChange }
-                          className="mt-2 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Descripción"
-                          name="descripcion"
-                          autoComplete="off"
-                          value={ descripcion }
-                          onChange={ handleInputChange }
-                          className="mt-2 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Fecha de vacuna"
-                          name="fecha"
-                          autoComplete="off"
-                          value={ fecha }
-                          onChange={ handleInputChange }
-                          className="mt-2 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Fecha de revacunacion"
-                          name="fechaRevacunacion"
-                          autoComplete="off"
-                          value={ fechaRevacunacion }
-                          onChange={ handleInputChange }
-                          className="mt-2 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
-                        />
-                      </div>
-                      <div className="py-5 flex justify-end items-end">
-                        <span className="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
-                          <button type="button" onClick={ handleCloseModal } className="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                            Cancelar
-                          </button>
-                        </span>
-                        <span className="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
-                          <button type="submit" className="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-primary text-base leading-6 font-medium text-white shadow-sm hover:bg-opacity-75 focus:outline-none focus:border-red-700 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                            {
-                              vacunaId === '' ? 'Guardar vacuna' : 'Actualizar vacuna'
-                            }
-                          </button>
-                        </span>
-                      </div>
-                    </form>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        placeholder="Nombre de la vacuna"
+                        name="nombreVacuna"
+                        autoComplete="off"
+                        value={ nombreVacuna }
+                        onChange={ handleInputChange }
+                        className="mt-2 form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Descripción"
+                        name="descripcion"
+                        autoComplete="off"
+                        value={ descripcion }
+                        onChange={ handleInputChange }
+                        className="mt-2 form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Fecha de vacuna"
+                        name="fecha"
+                        autoComplete="off"
+                        value={ fecha }
+                        onChange={ handleInputChange }
+                        className="mt-2 form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Fecha de revacunacion"
+                        name="fechaRevacunacion"
+                        autoComplete="off"
+                        value={ fechaRevacunacion }
+                        onChange={ handleInputChange }
+                        className="mt-2 form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 border border-gray-400 rounded-md p-3 text-base"
+                      />
+                    </div>
                   </div>
                 </div>
-
-
               </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent sm:ml-3 sm:w-auto sm:text-sm">
+                  {
+                    vacunaId === '' ? 'Guardar vacuna' : 'Actualizar vacuna'
+                  }
+                </button>
+                <button type="button" onClick={ handleCloseModal } className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                  Cancel
+                </button>
+              </div>
+            </form>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
     </div>
   )
 }

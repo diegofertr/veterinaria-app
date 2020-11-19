@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 export const CirugiasScreen = () => {
 
   const dispatch = useDispatch();
-  const { cirugias } = useSelector(state => state.ficha)
+  const { idFicha, cirugias } = useSelector(state => state.ficha)
   const [modalCirugia, setModalCirugia] = useState(false)
   const [cirugiaId, setCirugiaId] = useState('')
 
@@ -21,7 +21,7 @@ export const CirugiasScreen = () => {
   const { tipo, fecha, observacion } = formValues
 
   const handleRefreshCirugias = () => {
-    dispatch( cargarCirugias() );
+    dispatch( cargarCirugias( idFicha ) );
   }
 
   const handleOpenModal = () => {
@@ -37,6 +37,7 @@ export const CirugiasScreen = () => {
   const handleAddCirugia = () => {
     if (cirugiaId === '') {
       dispatch( addCirugia(
+        idFicha,
         tipo,
         fecha,
         observacion
@@ -50,7 +51,7 @@ export const CirugiasScreen = () => {
       ) )
     }
 
-    dispatch( cargarCirugias() )
+    dispatch( cargarCirugias( idFicha ) )
 
     setModalCirugia(false)
   }
@@ -73,7 +74,7 @@ export const CirugiasScreen = () => {
       if (result.isConfirmed) {
         dispatch( deleteCirugia( id ) )
         Swal.fire('Cirugia eliminada correctamente!', '', 'success')
-        dispatch( cargarCirugias() )
+        dispatch( cargarCirugias( idFicha ) )
       }
     })
   }

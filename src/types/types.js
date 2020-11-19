@@ -30,4 +30,9 @@ export const types = {
 
   usuariosAddNew: '[Usuarios] New usuario',
   usuariosLoad: '[Usuarios] Load usuarios',
+
+
+  mascotasLoad: '[Mascotas] Load mascotas',
+
+  fichaLoad: '[Ficha] Load ficha'
 }

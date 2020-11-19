@@ -1,16 +1,17 @@
-import { db } from "../firebase/firebase-config"
+import { cirugiasCollection } from "../firebase/firebase-config"
 
-export const loadCirugias = async () => {
+export const loadCirugias = async ( idFicha ) => {
 
-  const lista = await db.collection('cirugia').orderBy('createdAt', 'desc').get();
-  const cirugias = [];
-
-  lista.forEach( snap => {
+  let cirugias = [];
+  // const querySnapshot = await cirugiasCollection.where( 'idFicha', '==', idFicha ).get();
+  const querySnapshot = await cirugiasCollection.where( 'idFicha', '==', idFicha ).orderBy('createdAt', 'desc').get();
+  console.log( 'querySnapshot de cirugias', querySnapshot )
+  querySnapshot.forEach(doc => {
     cirugias.push({
-      id: snap.id,
-      ...snap.data()
-    });
-  });
+      id: doc.id,
+      ...doc.data()
+    })
+  })
 
   return cirugias;
 }

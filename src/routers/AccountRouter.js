@@ -31,9 +31,11 @@ export const AccountRouter = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('veterinaria_usuario'))
-    setUsuario( user.usuario )
-    setMenu( getMenuByRol( user.usuario.rol ))
-    setUserInitials( user.usuario.nombre.substr(0, 1) )
+    if (user) {
+      setUsuario( user.usuario )
+      setMenu( getMenuByRol( user.usuario.rol ))
+      setUserInitials( user.usuario.nombre.substr(0, 1) )
+    }
   }, [ dispatch, setUsuario, setMenu ])
 
   const { nombre, rol } = usuario;

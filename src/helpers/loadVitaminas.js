@@ -1,16 +1,16 @@
-import { db } from "../firebase/firebase-config"
+import { vitaminasCollection } from "../firebase/firebase-config"
 
-export const loadVitaminas = async () => {
+export const loadVitaminas = async ( idFicha ) => {
 
-  const vitaminasSnap = await db.collection('vitamina').orderBy('createdAt', 'desc').get();
-  const vitaminas = [];
-
-  vitaminasSnap.forEach( snap => {
+  let vitaminas = [];
+  // const querySnapshotVitaminas = await vitaminasCollection.where( 'idFicha', '==', idFicha ).get();
+  const querySnapshotVitaminas = await vitaminasCollection.where( 'idFicha', '==', idFicha ).orderBy('createdAt', 'desc').get();
+  querySnapshotVitaminas.forEach(doc => {
     vitaminas.push({
-      id: snap.id,
-      ...snap.data()
-    });
-  });
+      id: doc.id,
+      ...doc.data()
+    })
+  })
 
   return vitaminas;
 }

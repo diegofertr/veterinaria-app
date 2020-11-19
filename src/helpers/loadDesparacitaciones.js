@@ -1,16 +1,16 @@
-import { db } from "../firebase/firebase-config"
+import { desparacitacionesCollection } from "../firebase/firebase-config"
 
-export const loadDesparacitaciones = async () => {
+export const loadDesparacitaciones = async ( idFicha ) => {
 
-  const lista = await db.collection('desparacitacion').orderBy('createdAt', 'desc').get();
-  const desparacitaciones = [];
-
-  lista.forEach( snap => {
+  let desparacitaciones = [];
+  // const querySnapshot = await desparacitacionesCollection.where( 'idFicha', '==', idFicha ).get();
+  const querySnapshot = await desparacitacionesCollection.where( 'idFicha', '==', idFicha ).orderBy('createdAt', 'desc').get();
+  querySnapshot.forEach(doc => {
     desparacitaciones.push({
-      id: snap.id,
-      ...snap.data()
-    });
-  });
+      id: doc.id,
+      ...doc.data()
+    })
+  })
 
   return desparacitaciones;
 }
